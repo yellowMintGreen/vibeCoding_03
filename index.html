@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Premium Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Theme Toggle -->
+        <button class="theme-toggle" id="theme-toggle">
+            <i class="fa-solid fa-moon"></i>
+        </button>
+
+        <!-- Mode Tabs -->
+        <div class="tabs glass">
+            <div class="tab active" data-tab="calculator">계산기</div>
+            <div class="tab" data-tab="converter">단위변환</div>
+        </div>
+
+        <div class="calculator glass">
+            
+            <!-- CALCULATOR VIEW -->
+            <div id="calculator-view" class="view-panel active-view">
+                <!-- Display -->
+                <div class="display">
+                    <div class="previous-operand" id="previous-operand"></div>
+                    <div class="current-operand" id="current-operand">0</div>
+                </div>
+
+                <!-- Keypad -->
+                <div class="keypad">
+                    <!-- Advanced operators row -->
+                    <button class="btn btn-advanced" data-operation="√">√</button>
+                    <button class="btn btn-advanced" data-operation="^">xⁿ</button>
+                    <button class="btn btn-advanced" data-operation="%">%</button>
+                    <button class="btn btn-action" data-action="history-toggle"><i class="fa-solid fa-clock-rotate-left"></i></button>
+
+                    <!-- Standard operators & action -->
+                    <button class="btn btn-action" data-action="clear">AC</button>
+                    <button class="btn btn-action" data-action="delete"><i class="fa-solid fa-delete-left"></i></button>
+                    <button class="btn btn-operator" data-operation="÷">÷</button>
+                    <button class="btn btn-operator" data-operation="×">×</button>
+
+                    <button class="btn btn-number" data-number="7">7</button>
+                    <button class="btn btn-number" data-number="8">8</button>
+                    <button class="btn btn-number" data-number="9">9</button>
+                    <button class="btn btn-operator" data-operation="-">−</button>
+
+                    <button class="btn btn-number" data-number="4">4</button>
+                    <button class="btn btn-number" data-number="5">5</button>
+                    <button class="btn btn-number" data-number="6">6</button>
+                    <button class="btn btn-operator" data-operation="+">+</button>
+
+                    <button class="btn btn-number" data-number="1">1</button>
+                    <button class="btn btn-number" data-number="2">2</button>
+                    <button class="btn btn-number" data-number="3">3</button>
+                    <button class="btn btn-equals" data-action="equals" style="grid-row: span 2; height: 100%; border-radius: 16px;">=</button>
+
+                    <button class="btn btn-number btn-zero" data-number="0" style="grid-column: span 2;">0</button>
+                    <button class="btn btn-number" data-number=".">.</button>
+                </div>
+                
+                <!-- History Panel -->
+                <div class="history-panel glass" id="history-panel">
+                    <div class="history-header">
+                        <h3>계산 기록</h3>
+                        <button id="clear-history"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                    <div class="history-list" id="history-list">
+                        <!-- History items will go here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONVERTER VIEW -->
+            <div id="converter-view" class="view-panel">
+                <div class="converter-wrapper">
+                    <div class="converter-type-selector">
+                        <select id="converter-type">
+                            <option value="length">길이 (Length)</option>
+                            <option value="weight">무게 (Weight)</option>
+                            <option value="temperature">온도 (Temperature)</option>
+                        </select>
+                    </div>
+
+                    <div class="converter-box">
+                        <div class="converter-input-group">
+                            <input type="number" id="conv-input-1" value="1">
+                            <select id="conv-unit-1"></select>
+                        </div>
+                        <div class="converter-icon"><i class="fa-solid fa-arrow-right-arrow-left"></i></div>
+                        <div class="converter-input-group">
+                            <input type="number" id="conv-input-2" readonly>
+                            <select id="conv-unit-2"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Background decorative elements -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

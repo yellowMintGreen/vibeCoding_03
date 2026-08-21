@@ -1,0 +1,474 @@
+:root {
+    /* Light Theme (Default) */
+    --bg-color: #f0f4f8;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --glass-bg: rgba(255, 255, 255, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.8);
+    --glass-shadow: rgba(0, 0, 0, 0.05);
+    
+    --btn-bg: rgba(255, 255, 255, 0.7);
+    --btn-hover: rgba(255, 255, 255, 0.9);
+    --btn-active: rgba(255, 255, 255, 0.5);
+    
+    --btn-operator-bg: rgba(219, 234, 254, 0.7);
+    --btn-operator-text: #2563eb;
+    
+    --btn-action-bg: rgba(254, 226, 226, 0.7);
+    --btn-action-text: #dc2626;
+    
+    --btn-equals-bg: #3b82f6;
+    --btn-equals-text: #ffffff;
+
+    --blob-1: #3b82f6;
+    --blob-2: #8b5cf6;
+    --blob-3: #ec4899;
+}
+
+[data-theme="dark"] {
+    /* Dark Theme */
+    --bg-color: #0f172a;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --glass-bg: rgba(15, 23, 42, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-shadow: rgba(0, 0, 0, 0.3);
+    
+    --btn-bg: rgba(30, 41, 59, 0.7);
+    --btn-hover: rgba(51, 65, 85, 0.9);
+    --btn-active: rgba(15, 23, 42, 0.5);
+    
+    --btn-operator-bg: rgba(37, 99, 235, 0.3);
+    --btn-operator-text: #60a5fa;
+    
+    --btn-action-bg: rgba(220, 38, 38, 0.3);
+    --btn-action-text: #f87171;
+    
+    --btn-equals-bg: #3b82f6;
+    --btn-equals-text: #ffffff;
+
+    --blob-1: #1d4ed8;
+    --blob-2: #6d28d9;
+    --blob-3: #be185d;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Outfit', sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    min-height: 100vh;
+    /* Do NOT use flex centering on body to prevent cutoff when zoomed */
+    overflow-x: hidden;
+    overflow-y: auto;
+    transition: background-color 0.5s ease, color 0.5s ease;
+    position: relative;
+    padding: 20px; /* Breathing room for scrolling */
+}
+
+/* Animated Background Blobs */
+.blob {
+    position: fixed; /* Fixed so they don't scroll with content */
+    filter: blur(80px);
+    z-index: -1;
+    opacity: 0.6;
+    animation: float 10s infinite ease-in-out alternate;
+}
+
+.blob-1 {
+    width: 400px;
+    height: 400px;
+    background: var(--blob-1);
+    top: -100px;
+    left: -100px;
+    border-radius: 40% 60% 70% 30% / 40% 40% 60% 50%;
+}
+
+.blob-2 {
+    width: 300px;
+    height: 300px;
+    background: var(--blob-2);
+    bottom: -50px;
+    right: -50px;
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    animation-delay: -2s;
+}
+
+.blob-3 {
+    width: 250px;
+    height: 250px;
+    background: var(--blob-3);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+    animation-delay: -4s;
+}
+
+@keyframes float {
+    0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    100% { transform: translate(30px, 50px) rotate(20deg) scale(1.1); }
+}
+
+.app-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin: 5vh auto; /* Centers horizontally, pushes down slightly */
+    /* Removed fixed padding here to maximize width if zoomed */
+}
+
+.theme-toggle {
+    position: absolute;
+    top: -50px;
+    right: 0;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 6px var(--glass-shadow);
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.theme-toggle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px var(--glass-shadow);
+}
+
+.glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 25px 50px -12px var(--glass-shadow);
+    border-radius: 30px;
+}
+
+.calculator {
+    padding: 25px; /* Slightly reduced padding to leave room for buttons */
+    position: relative;
+    overflow: hidden; /* Hides history panel when closed */
+}
+
+.display {
+    text-align: right;
+    margin-bottom: 20px;
+    padding: 10px 10px;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+.previous-operand {
+    color: var(--text-secondary);
+    font-size: min(1.2rem, 4vw);
+    min-height: 24px;
+    margin-bottom: 5px;
+    font-weight: 400;
+}
+
+.current-operand {
+    color: var(--text-primary);
+    font-size: min(3rem, 10vw);
+    font-weight: 600;
+    letter-spacing: -1px;
+    transition: font-size 0.2s ease;
+}
+
+.keypad {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 1fr; /* Ensures rows are uniformly sized */
+    gap: 12px;
+}
+
+.btn {
+    border: none;
+    outline: none;
+    border-radius: 16px;
+    font-size: min(1.5rem, 5vw); /* Responsive font size */
+    font-weight: 500;
+    cursor: pointer;
+    background: var(--btn-bg);
+    color: var(--text-primary);
+    box-shadow: 0 4px 6px var(--glass-shadow);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    aspect-ratio: 1; /* Makes standard buttons square */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    
+    /* Crucial for grid stability when zoomed in */
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden; 
+}
+
+.btn:hover {
+    background: var(--btn-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px var(--glass-shadow);
+}
+
+.btn:active {
+    background: var(--btn-active);
+    transform: translateY(2px) scale(0.95);
+    box-shadow: 0 2px 4px var(--glass-shadow);
+}
+
+.btn-zero {
+    grid-column: span 2;
+    aspect-ratio: auto; /* Allow non-square */
+}
+
+.btn-operator {
+    background: var(--btn-operator-bg);
+    color: var(--btn-operator-text);
+    font-weight: 600;
+}
+
+.btn-action {
+    background: var(--btn-action-bg);
+    color: var(--btn-action-text);
+    font-size: min(1.2rem, 4.5vw);
+}
+
+.btn-advanced {
+    background: var(--btn-operator-bg);
+    color: var(--text-primary);
+    font-size: min(1.1rem, 4vw);
+}
+
+.btn-equals {
+    background: var(--btn-equals-bg);
+    color: var(--btn-equals-text);
+    font-weight: 600;
+    aspect-ratio: auto; /* Allow it to span 2 rows without getting too wide */
+}
+
+.btn-equals:hover {
+    background: #2563eb;
+    box-shadow: 0 8px 15px rgba(59, 130, 246, 0.4);
+}
+
+/* History Panel Styling */
+.history-panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 30px;
+    border-radius: 30px;
+    transform: translateY(100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+}
+
+.history-panel.active {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.history-header h3 {
+    font-weight: 500;
+    font-size: 1.2rem;
+}
+
+#clear-history {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: color 0.2s;
+}
+
+#clear-history:hover {
+    color: var(--btn-action-text);
+}
+
+.history-list {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-right: 5px;
+}
+
+.history-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.history-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.history-list::-webkit-scrollbar-thumb {
+    background: var(--glass-border);
+    border-radius: 10px;
+}
+
+.history-item {
+    text-align: right;
+    padding: 10px;
+    border-radius: 12px;
+    background: var(--btn-bg);
+    transition: background 0.2s;
+    cursor: pointer;
+}
+
+.history-item:hover {
+    background: var(--btn-hover);
+}
+
+.history-expr {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.history-res {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+/* Animations */
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.history-item {
+    animation: slideDown 0.3s ease forwards;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 15px;
+    padding: 5px;
+    border-radius: 20px;
+}
+
+.tab {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 15px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+    font-size: min(1rem, 4vw);
+}
+
+.tab.active {
+    background: var(--btn-bg);
+    color: var(--text-primary);
+    box-shadow: 0 4px 6px var(--glass-shadow);
+}
+
+/* View Panels */
+.view-panel {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.view-panel.active-view {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Converter Styling */
+.converter-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px 0;
+}
+
+.converter-type-selector select, .converter-input-group select, .converter-input-group input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    background: var(--btn-bg);
+    color: var(--text-primary);
+    font-size: 1rem;
+    outline: none;
+    font-family: "Outfit", sans-serif;
+}
+
+.converter-type-selector select {
+    font-weight: 600;
+    text-align: center;
+}
+
+.converter-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.converter-input-group input {
+    font-size: min(2rem, 8vw);
+    font-weight: 500;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--glass-border);
+    border-radius: 0;
+    padding: 10px 5px;
+}
+
+.converter-icon {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    padding: 10px 0;
+}
+
+/* Highly Responsive adjust for very small screens / massive zoom */
+@media (max-width: 350px) {
+    body { padding: 10px; }
+    .calculator { padding: 15px; }
+    .keypad { gap: 8px; }
+    .btn { border-radius: 12px; }
+}
